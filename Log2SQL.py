@@ -23,8 +23,8 @@ parser.add_argument("-v","--verbose",dest="verbose",default=0,action="count",hel
 parser.add_argument("-i","--info",dest="info",default=0,action="count",help="more information on --template and --data")
 parser.add_argument("-c","--case",dest="caseSensitive",default=False,action="store_true",help="field names are case-sensitive")
 parser.add_argument("-a","--all",dest="applyFilter",default=True,action="store_false",help="include all results (else filter intermediate duplicates)")
-parser.add_argument("-k","--keep",dest="keepDuplicates",default=False,action="store_true",help="keep duplicates in the table (otherwise delete after processing.")
-parser.add_argument("-m","--midpoints",dest="keepMidpoints",default=False,action="store_true",help="keep midpoints the table (otherwise delete after processing.")
+parser.add_argument("-k","--keep",dest="keepDuplicates",default=False,action="store_true",help="keep duplicates in the table (otherwise delete after processing).")
+parser.add_argument("-m","--midpoints",dest="keepMidpoints",default=False,action="store_true",help="keep midpoints the table (otherwise delete after processing).")
 
 info=r"\
 Format for --template template:\
@@ -362,7 +362,10 @@ for arg in options.args:
             break
     # If we've added duplicates, we need to remove them.
     if not options.keepDuplicates:
-        cursor.execute("DELETE FROM {table} WHERE EXISTS (SELECT 1 FROM {table} T2 WHERE {table}.{datetimeField} = T2.{datetimeField} AND {table}.ROWID > T2.ROWID)".format(table=datatable,datetimeField=[x for x in useCols if datadesc[x]=='datetime'][0]))
+        sql="DELETE FROM {table} WHERE EXISTS (SELECT 1 FROM {table} T2 WHERE {table}.{datetimeField} = T2.{datetimeField} AND {table}.ROWID > T2.ROWID)".format(table=datatable,datetimeField=[x for x in useCols if datadesc[x]=='datetime'][0])
+        if options.verbose > 1:
+            print(sql)
+        cursor.execute(sql)
         if not options.keepMidpoints:
 # Some special SQL to remove all intermediate values (where there is a same-valued record just prior and just after)
             sql=" \
@@ -383,6 +386,8 @@ SELECT rowid \
  AND (SELECT THIS.{field} FROM {table} THIS WHERE THIS.{datetimeField} = A.this{datetimeField}) = (SELECT POST.{field} FROM {table} POST WHERE POST.{datetimeField} = A.post{datetimeField}) \
 ".format(table=datatable,datetimeField=[x for x in useCols if datadesc[x]=='datetime'][0],field=ff) for ff in useCols if datadesc[ff]!='datetime'])
             sql=sql+')'
+            if options.verbose > 1:
+                print(sql)
             cursor.execute(sql)
 if database:
     database.commit()
