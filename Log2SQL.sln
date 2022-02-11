@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Log2SQL", "Log2SQL.pyproj", "{9815E3CA-C129-4C2E-AAEE-31BCF07F60DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9815E3CA-C129-4C2E-AAEE-31BCF07F60DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9815E3CA-C129-4C2E-AAEE-31BCF07F60DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {15E75092-B027-4849-82FA-FD4B9F218706}
+	EndGlobalSection
+EndGlobal
